@@ -1,11 +1,11 @@
 const CryptoJS = require("crypto-js");
-const { uuid } = require("uuidv4");
+const { v4: uuidv4 } = require("uuid");
 const fs = require("fs");
 
 class Database {
     constructor({ data, name, password}) {
         this.data = data;
-        this.hasChanged = false;
+        this.hasChanged = true;
         this.classObject = null;
         this.password = password;
         this.name = name;
@@ -22,7 +22,7 @@ class Database {
             } catch (error) {
                 console.log(error);
             };
-        }, 3000);
+        }, 1000);
 
         setInterval(() => {
             try {
@@ -57,14 +57,11 @@ class Database {
     };
 
     set(object) {
-        if (!object.id) object.id = uuid();
+        if (!object.id) object.id = uuidv4();
 
         const itemExists = this.data.find(item => item.id === object.id);
-        if (itemExists) {
-            this.data = this.data.map(item => item.id === object.id ? object : item);
-        } else {
-            this.data.push(object);
-        };
+        if (itemExists) this.data = this.data.map(item => item.id === object.id ? object : item);
+        else this.data.push(object);
 
         this.hasChanged = true;
     };

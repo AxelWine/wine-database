@@ -1,4 +1,4 @@
-const WineDB = require("../winebase.js");
+const WineDB = require("../index.js");
 
 (async () => {
     const db = await WineDB.init("test", "password");
