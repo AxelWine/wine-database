@@ -48,11 +48,13 @@ class Database {
 
     get(prop, value) {
         const items = this.data.filter(item => item[prop] === value);
+        if (!items.length) return this.classObject ? [new this.classObject({})] : [{}];
         return this.classObject ? items.map(item => new this.classObject(item)) : items;
     };
 
     getFirst(prop, value) {
         const item = this.data.find(item => item[prop] === value);
+        if (!item) return this.classObject ? new this.classObject({}) : {};
         return this.classObject ? new this.classObject(item) : item;
     };
 
