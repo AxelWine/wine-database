@@ -1,0 +1,29 @@
+{
+  "name": "wine-database",
+  "version": "1.0.0",
+  "description": "JSON database with encryption and easy implementation method",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test/index.js"
+  },
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "crypto-js": "^4.2.0",
+    "uuidv4": "^6.2.13"
+  },
+  "keywords": [
+    "database",
+    "json",
+    "encryption",
+    "easy"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AxelWine/wine-database.git"
+  },
+  "bugs": {
+    "url": "https://github.com/AxelWine/wine-database/issues"
+  },
+  "author": "Axel Wine Studios",
+  "license": "MIT"
+}
