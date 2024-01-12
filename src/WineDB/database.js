@@ -1,6 +1,6 @@
-const CryptoJS = require("crypto-js");
-const { v4: uuidv4 } = require("uuid");
-const fs = require("fs");
+import CryptoJS from "crypto-js";
+import { v4 as uuidv4 } from "uuid";
+import fs from "fs";
 
 class Database {
     constructor({ data, name, password}) {
@@ -9,6 +9,7 @@ class Database {
         this.classObject = null;
         this.password = password;
         this.name = name;
+        console.log(this.password);
 
         setInterval(() => {
             if (!this.hasChanged) return;
@@ -16,11 +17,13 @@ class Database {
                 const encrypted = CryptoJS.AES.encrypt(JSON.stringify(this.data), this.password).toString();
 
                 if (!fs.existsSync("database")) fs.mkdirSync("database");
-                if (fs.existsSync(`database/${this.name}.wdb`)) fs.unlinkSync(`database/${this.name}.wdb`);
-                fs.writeFileSync(`database/${this.name}.wdb`, encrypted);
+
+                const tmpFile = `database/.${this.name}.wdb.tmp`;
+                fs.writeFileSync(tmpFile, encrypted);
+                fs.renameSync(tmpFile, `database/${this.name}.wdb`);
                 this.hasChanged = false;
             } catch (error) {
-                console.log(error);
+                throw new Error(error);
             };
         }, 1000);
 
@@ -33,7 +36,7 @@ class Database {
                 if (fs.existsSync(`database/securityBackup/${this.name}.wdb`)) fs.unlinkSync(`database/securityBackup/${this.name}.wdb`);
                 fs.writeFileSync(`database/securityBackup/${this.name}.wdb`, encrypted);
             } catch (error) {
-                console.log(error);
+                throw new Error(error);
             };
         }, 10000);
     };
@@ -74,4 +77,4 @@ class Database {
     };
 };
 
-module.exports = Database;
+export default Database;
