@@ -9,7 +9,6 @@ class Database {
         this.classObject = null;
         this.password = password;
         this.name = name;
-        console.log(this.password);
 
         setInterval(() => {
             if (!this.hasChanged) return;
