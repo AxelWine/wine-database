@@ -1,3 +1,3 @@
-const WineDB = require('./src/WineDB');
+import WineDB from "./src/WineDB/index.js";
 
-module.exports = WineDB;
+export default WineDB;
