@@ -11,7 +11,7 @@ const WineDB = require("wine-database");
 
 (async () => {
     const db = await WineDB.init("name", "password");
-    db.set({
+    db.create({
         name: "test"
     });
     
@@ -24,18 +24,29 @@ const WineDB = require("wine-database");
 // Gets all elements
 db.getAll();
 
-// Gets all elements that match the value in a key
-db.get("key", "value");
+// Gets an element by its ID
+db.get("id");
 
-// Gets the first element that matches the value in a key
-db.getFirst("key", "value");
+// Filters all elements and returns objects that match the requirements
+db.filter(x => x.age > 18);// Returns users whose age is greater than 18 years
 
-// Saves a new item or replaces the item if it contains an ID
+// Gets the first element that matches the requirements
+db.find(x => x.age > 18);//Returns the first user whose age is greater than 18 years
+
+// Create a new object in the database. In all cases it will assign a unique ID even if the passed object already has an ID, it will replace it
+db.create(object);
+// This function will always return the object created in the database
+
+// Try to save an existing object, if it cannot find it it will create a new object
+db.setOrCreate(object);
+// This function will always return the object created or changed in the database
+
+// Save an existing element and return that element
 db.set(object);
-// If no match is found, a new item is created and assigned an ID if it does not have one assigned.
+// If no match is found, returns undefined
 
-// Delete an element that matches the value in a key
-db.delete("key", "value");
+// Delete an element by its ID
+db.delete("id");
 ```
 
 ## License

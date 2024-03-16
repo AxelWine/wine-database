@@ -1,6 +1,6 @@
 {
   "name": "wine-database",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "JSON database with encryption and easy implementation method",
   "main": "index.js",
   "type": "module",

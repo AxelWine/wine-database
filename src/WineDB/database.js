@@ -48,30 +48,68 @@ class Database {
         return this.classObject ? this.data.map(item => new this.classObject(item)) : this.data;
     };
 
-    get(prop, value) {
-        const items = this.data.filter(item => item[prop] === value);
-        if (!items.length) return this.classObject ? [new this.classObject({})] : [{}];
-        return this.classObject ? items.map(item => new this.classObject(item)) : items;
+    get(id) {
+        const item = this.data.filter(item => item.id === id);
+        if (!item.length) return;
+        return this.classObject ? new this.classObject(item) : item;
+    };
+    
+    filter(func) {
+        return this.classObject
+            ? this.data.filter(func).map(item => new this.classObject(item))
+            : this.data.filter(func);
     };
 
-    getFirst(prop, value) {
-        const item = this.data.find(item => item[prop] === value);
-        if (!item) return this.classObject ? new this.classObject({}) : {};
+    find(func) {
+        const item = this.data.find(func);
+        if (!item) return;
         return this.classObject ? new this.classObject(item) : item;
     };
 
     set(object) {
-        if (!object.id) object.id = uuidv4();
+        let dbObject = JSON.parse(JSON.stringify(object));
+        if (!dbObject.id) dbObject.id = uuidv4();
+        if (this.classObject) dbObject = new this.classObject(dbObject);
 
-        const itemExists = this.data.find(item => item.id === object.id);
-        if (itemExists) this.data = this.data.map(item => item.id === object.id ? object : item);
-        else this.data.push(object);
+        const itemExists = this.data.find(item => item.id === dbObject.id);
+        if (itemExists) this.data = this.data.map(item => item.id === dbObject.id ? dbObject : item);
+        else {
+            console.error("[WineDB] Item does not exist in database.");
+            return;
+        };
 
         this.hasChanged = true;
+
+        return dbObject;
     };
 
-    delete(prop, value) {
-        this.data = this.data.filter(item => item[prop] !== value);
+    setOrCreate(object) {
+        let dbObject = JSON.parse(JSON.stringify(object));
+        if (!dbObject.id) dbObject.id = uuidv4();
+        if (this.classObject) dbObject = new this.classObject(dbObject);
+
+        const itemExists = this.data.find(item => item.id === dbObject.id);
+        if (itemExists) this.data = this.data.map(item => item.id === dbObject.id ? dbObject : item);
+        else this.data.push(dbObject);
+
+        this.hasChanged = true;
+
+        return dbObject;
+    };
+
+    create(object) {
+        let dbObject = JSON.parse(JSON.stringify(object));
+        dbObject.id = uuidv4();
+        if (this.classObject) dbObject = new this.classObject(dbObject);
+
+        this.data.push(dbObject);
+        this.hasChanged = true;
+
+        return dbObject;
+    };
+
+    delete(id) {
+        this.data = this.data.filter(item => item.id !== id);
         this.hasChanged = true;
     };
 };
