@@ -4,6 +4,7 @@ const fs = require("fs");
 
 class Database {
     constructor({ data, name, password}) {
+        const disableEncrypt = !password;
         this.data = data;
         this.hasChanged = true;
         this.ClassObject = null;
@@ -13,7 +14,7 @@ class Database {
         setInterval(() => {
             if (!this.hasChanged) return;
             try {
-                const encrypted = CryptoJS.AES.encrypt(JSON.stringify(this.data), this.password).toString();
+                const encrypted = disableEncrypt ? JSON.stringify(this.data) : CryptoJS.AES.encrypt(JSON.stringify(this.data), this.password).toString();
 
                 if (!fs.existsSync("database")) fs.mkdirSync("database");
 
@@ -28,7 +29,7 @@ class Database {
 
         setInterval(() => {
             try {
-                const encrypted = CryptoJS.AES.encrypt(JSON.stringify(this.data), this.password).toString();
+                const encrypted = disableEncrypt ? JSON.stringify(this.data) : CryptoJS.AES.encrypt(JSON.stringify(this.data), this.password).toString();
 
                 if (!fs.existsSync("database")) fs.mkdirSync("database");
                 if (!fs.existsSync("database/securityBackup")) fs.mkdirSync("database/securityBackup");
