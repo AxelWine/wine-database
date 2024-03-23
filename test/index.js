@@ -1,4 +1,4 @@
-import WineDB from "../index.js";
+const WineDB = require("../index.js");
 
 (async () => {
     const db = await WineDB.init("test", "password");

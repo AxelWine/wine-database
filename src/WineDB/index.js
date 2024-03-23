@@ -1,7 +1,7 @@
-import CryptoJS from "crypto-js";
-import fs from "fs";
+const CryptoJS = require("crypto-js");
+const fs = require("fs");
 
-import Database from "./database.js";
+const Database = require("./database.js");
 const WineDB = {
     init: async (name, key) => {
         return new Promise(async (resolve, reject) => {
@@ -39,4 +39,4 @@ const WineDB = {
     }
 };
 
-export default WineDB;
+module.exports = WineDB;
