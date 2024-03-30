@@ -50,7 +50,7 @@ class Database {
     };
 
     get(id) {
-        const item = this.data.filter(item => item.id === id);
+        const item = this.data.find(item => item.id === id);
         if (!item.length) return;
         return this.ClassObject ? new this.ClassObject(item) : item;
     };
