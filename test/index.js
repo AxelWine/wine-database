@@ -1,4 +1,4 @@
-const WineDB = require("../index.js");
+const WineDB = require("../index.cjs");
 
 (async () => {
     const db = await WineDB.init("test");

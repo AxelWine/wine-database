@@ -5,6 +5,7 @@ const fs = require("fs");
 class Database {
     constructor({ data, name, password}) {
         const disableEncrypt = !password;
+        const format = disableEncrypt ? "json" : "wdb";
         this.data = data;
         this.hasChanged = true;
         this.ClassObject = null;
@@ -18,9 +19,9 @@ class Database {
 
                 if (!fs.existsSync("database")) fs.mkdirSync("database");
 
-                const tmpFile = `database/.${this.name}.wdb.tmp`;
+                const tmpFile = `database/.${this.name}.${format}.tmp`;
                 fs.writeFileSync(tmpFile, encrypted);
-                fs.renameSync(tmpFile, `database/${this.name}.wdb`);
+                fs.renameSync(tmpFile, `database/${this.name}.${format}`);
                 this.hasChanged = false;
             } catch (error) {
                 throw new Error(error);
@@ -33,8 +34,8 @@ class Database {
 
                 if (!fs.existsSync("database")) fs.mkdirSync("database");
                 if (!fs.existsSync("database/securityBackup")) fs.mkdirSync("database/securityBackup");
-                if (fs.existsSync(`database/securityBackup/${this.name}.wdb`)) fs.unlinkSync(`database/securityBackup/${this.name}.wdb`);
-                fs.writeFileSync(`database/securityBackup/${this.name}.wdb`, encrypted);
+                if (fs.existsSync(`database/securityBackup/${this.name}.${format}`)) fs.unlinkSync(`database/securityBackup/${this.name}.${format}`);
+                fs.writeFileSync(`database/securityBackup/${this.name}.${format}`, encrypted);
             } catch (error) {
                 throw new Error(error);
             };
@@ -65,6 +66,14 @@ class Database {
         const item = this.data.find(func);
         if (!item) return;
         return this.ClassObject ? new this.ClassObject(item) : item;
+    };
+
+    some(func) {
+        return this.data.some(func);
+    };
+
+    every(func) {
+        return this.data.every(func);
     };
 
     set(object) {
