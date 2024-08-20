@@ -1,0 +1,1 @@
+module.exports = json => JSON.parse(JSON.stringify(json));
