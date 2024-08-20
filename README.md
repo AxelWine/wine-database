@@ -62,9 +62,9 @@ db.defineClass(ClassObject);
 **Example:**
 ```js
 class Wine {
-    constructor(name, year) {
-        this.name = name;
-        this.year = year;
+    constructor(props) {
+        this.name = props.name;
+        this.year = props.year;
     }
 
     getAge() {
