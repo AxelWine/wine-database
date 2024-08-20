@@ -1,12 +1,13 @@
 name: Node.js Package
 
 on:
+  pull_request:
+    types: [opened, synchronize, reopened]
   release:
     types: [created]
 
 jobs:
-  build:
-    needs: security
+  security:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -30,6 +31,17 @@ jobs:
       
       - name: Install Dependencies
         run: npm install
-
-      - name: Build
-        run: npm publish --provenance --access public
+      
+      - name: Check for Updates
+        run: |
+          npx npm-check-updates
+          if [ $? -ne 0 ]; then
+            echo "New versions of dependencies found. Please update them before proceeding."
+            exit 1
+          fi
+      
+      - name: Run Tests
+        run: npm test --silent
+      
+      - name: Run security audit
+        run: npm audit
