@@ -1,7 +1,7 @@
 const WineDB = require("../index.cjs");
 
 (async () => {
-    const db = await WineDB.init("test");
+    const db = WineDB.init("test");
     db.create({
         name: "test"
     });
