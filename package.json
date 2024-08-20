@@ -4,9 +4,10 @@
   "description": "NoSQL database with encryption and easy implementation method",
   "main": "index.cjs",
   "scripts": {
-    "test": "node test/index.js"
+    "test": "jest --silent"
   },
   "dependencies": {
+    "colors": "^1.4.0",
     "crypto-js": "^4.2.0",
     "uuid": "^10.0.0"
   },
@@ -25,5 +26,8 @@
     "url": "https://github.com/AxelWine/wine-database/issues"
   },
   "author": "Axel Wine Studios",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
 }
