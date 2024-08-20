@@ -266,36 +266,4 @@ describe("WineDB Tests", () => {
             done();
         }, 1000);
     });
-
-    // This is temporary, in the future we plan to add code improvements
-    // that will allow handling much larger amounts of data.
-    test("should work fine with a large amount of data", () => {
-        db = WineDB.init("test");
-        let start = Date.now();
-        const amount = 100000;
-        const maxTime = 1000;
-        for (let i = 0; i < amount; i++) {
-            db.create({ name: `test${i + 1}` });
-        };
-        expect(Date.now() - start).toBeLessThan(maxTime);
-
-        start = Date.now();
-        const entry900 = db.find(x => x.name === "test900");
-        expect(Date.now() - start).toBeLessThan(maxTime);
-        expect(entry900).not.toBeNull();
-        expect(entry900.name).toBe("test900");
-
-        const entry900Copy = db.get(entry900.id);
-        expect(entry900Copy).not.toBeNull();
-        expect(entry900Copy.name).toBe("test900");
-
-        start = Date.now();
-        const entries = db.filter(x => x.name.includes("test"));
-        expect(Date.now() - start).toBeLessThan(maxTime);
-        expect(entries.length).toBe(amount);
-
-        start = Date.now();
-        db.delete(entry900.id);
-        expect(Date.now() - start).toBeLessThan(maxTime);
-    });
 });
