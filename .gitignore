@@ -1,4 +1,5 @@
 node_modules
 coverage
 database
+notes.txt
 package-lock.json

@@ -1,29 +1,34 @@
 class CacheManager {
     constructor({ data }) {
-        this.cache = this.indexData(data, "id");
-    }
-
-    indexData(data, keyField) {
-        return data.reduce((acc, item) => {
-            acc[item[keyField]] = item;
-            return acc;
-        }, {});
+        this.cache = data;
     }
 
     all() {
-        return Object.entries(this.cache).map(([id, value]) => ({ id, ...value }));
+        return [...this.cache];
     }
 
     get(key) {
-        return this.cache[key];
+        return this.cache.find(item => item.id === key);
     }
 
     set(key, value) {
-        this.cache[key] = value;
+        const index = this.cache.findIndex(item => item.id === key);
+        if (index === -1) {
+            this.cache.push({
+                id: key,
+                ...value
+            });
+        } else {
+            this.cache[index] = {
+                id: key,
+                ...value
+            };
+        };
     }
 
     delete(key) {
-        delete this.cache[key];
+        const index = this.cache.findIndex(item => item.id === key);
+        if (index !== -1) this.cache.splice(index, 1);
     }
 };
 
